@@ -2,7 +2,7 @@ name: upload_file
 on: 
     push:
         branches:
-            master
+            main
     
     pull_request:
         types: 
@@ -24,7 +24,7 @@ jobs:
               run: npm install
             - name: upload file
               id: upload
-              run: echo "msg=file uploaded" >> $GITHUB_OUTPUT
+              run: echo "msg=myapp" >> $GITHUB_OUTPUT
     
     deploy:
         needs: upload
@@ -33,3 +33,17 @@ jobs:
         steps: 
             - name: use_output
               run: echo "Message from upload job ${{needs.upload.outputs.message}}"
+    
+    docker:
+        needs: [upload ,deploy]
+        runs-on: ubuntu-latest
+         
+        steps:
+           - name: download code
+             uses: actions/checkout@v4
+           - name: docker compose
+             run: docker compose up --build
+           - name: check container
+             run: docker ps
+           - name: test app
+             run: curl http://localhost:4000
