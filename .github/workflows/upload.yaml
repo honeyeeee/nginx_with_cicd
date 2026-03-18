@@ -1,0 +1,24 @@
+name: upload_file
+on: 
+    push:
+        branches:
+            master
+    
+    pull_request:
+        types: 
+            - opened
+jobs:
+    upload:
+        runs-on: ubuntu-latest
+        steps:
+            - name: download file
+              uses: actions/checkout@4
+            - name: install node  
+              uses: actions/setup-node@v3
+              with: 
+                node-version: 18
+
+            - name: install dependencies
+              run: npm install
+            - name: upload file
+              run: echo "file uploaded "

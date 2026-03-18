@@ -1,0 +1,16 @@
+services:
+  node:
+    build: .
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - node
