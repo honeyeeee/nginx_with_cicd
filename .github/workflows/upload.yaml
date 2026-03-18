@@ -37,6 +37,9 @@ jobs:
     docker:
         needs: [upload ,deploy]
         runs-on: ubuntu-latest
+        outputs:
+            image: ${{steps.images.outcome.image}}
+           
          
         steps:
            - name: download code
@@ -47,3 +50,16 @@ jobs:
              run: docker ps
            - name: test app
              run: curl http://localhost:8080
+           - name: output image
+             id: images
+             run: echo "image=myapp" >>  $GITHUB_OUTPUT
+       
+    docker_image:
+        needs: [upload,deploy,docker]
+        runs-on: ubuntu-latest
+        steps:
+          - name: docker image
+            run: echo " docker image is = ${{needs.docker.outputs.image}}"
+          - name: done
+            run: echo " all jon has been done"
+        
