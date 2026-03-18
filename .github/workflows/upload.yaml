@@ -10,6 +10,8 @@ on:
 jobs:
     upload:
         runs-on: ubuntu-latest
+        outputs:
+          message: ${{steps.upload.outputs.msg}}
         steps:
             - name: download file
               uses: actions/checkout@v4
@@ -21,4 +23,13 @@ jobs:
             - name: install dependencies
               run: npm install
             - name: upload file
-              run: echo "file uploaded "
+              id: upload
+              run: echo "msg=file uploaded" >> $GITHUB_OUTPUT
+    
+    deploy:
+        needs: upload
+        runs-on: ubuntu-latest
+
+        steps: 
+            - name: use_output
+              run: echo "Message from upload job ${{needs.upload.outputs.message}}"
