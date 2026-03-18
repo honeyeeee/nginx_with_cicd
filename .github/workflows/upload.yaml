@@ -38,7 +38,7 @@ jobs:
         needs: [upload ,deploy]
         runs-on: ubuntu-latest
         outputs:
-            image: ${{steps.images.outcome.image}}
+            image: ${{steps.images.outputs.image}}
            
          
         steps:
