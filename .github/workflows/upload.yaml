@@ -42,8 +42,8 @@ jobs:
            - name: download code
              uses: actions/checkout@v4
            - name: docker compose
-             run: docker compose up --build
+             run: docker compose up -d --build
            - name: check container
              run: docker ps
            - name: test app
-             run: curl http://localhost:4000
+             run: curl http://localhost:8000
